@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+          crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <title>CustomerList</title>
+</head>
+<body>
+<h1>a specific customer</h1>
+
+<div class="container">
+  <table class="table" id="customers">
+    <thead>
+    <tr>
+      <th data-field="customerId">ID</th>
+      <th data-field="firstName">First Name</th>
+      <th data-field="lastName">Last Name</th>
+      <th data-field="street">Street</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
+<div class="container">
+  <p id="infoArea"></p>
+</div>
+</body>
+<script>
+  $(function () {
+      $.ajax({
+          url: "/api/customer?email=franz@huber.ch",
+          success: function(response) {
+
+              console.log(response);
+              $('#infoArea').html(response.toString());
+
+              $(response).each(function(i, e) {
+                  var newElement = $('<tr>').append(
+                      $('<td>').text(e.customerId),
+                      $('<td>').text(e.firstName),
+                      $('<td>').text(e.lastName),
+                      $('<td>').text(e.street)
+                  );
+                  $('#customers').append(newElement);
+              });
+          },
+          error: function(result) {
+              // handle the error
+              $('#infoArea').html("<strong>Unable to fetch data Reason: "+result+"</strong>");
+          }
+      });
+  });
+</script>
+</html>
